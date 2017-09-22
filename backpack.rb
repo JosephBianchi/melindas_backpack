@@ -9,43 +9,56 @@ class Backpack
     @items
   end
 
-  def prepare
-    # set up local variables used by rest of prepare method
-    x = @attributes[:weather]
+
+  def appropriate_clothes
+    weather = @attributes[:weather]
     day_of_week = @attributes[:day_of_week]
+      if weather == 'rainy'
+        @items << 'pants'
+        @items << 'shirt'
+        @items << 'umbrella'
+      elsif weather == 'cold'
+        @items << 'pants'
+        @items << 'shirt'
+        @items << 'jacket'
+      else
+        @items << 'pants'
+        @items << 'shirt'
+      end
+  end
 
-    # Ensure appropriate clothing is added to backpack
-    if x == 'rainy'
-      @items << 'pants'
-      @items << 'shirt'
-      @items << 'umbrella'
-    elsif x == 'cold'
-      @items << 'pants'
-      @items << 'shirt'
-      @items << 'jacket'
-    else
-      @items << 'pants'
-      @items << 'shirt'
-    end
-
-    # Ensure gym shoes are added to backpack if it's a gym day
-    # Gotta get to the gym on Tuesdays and Thursdays. Wait a sec...
+  def ensure_gym_shoes
+    weather = @attributes[:weather]
+    day_of_week = @attributes[:day_of_week]
     if day_of_week == 'monday' || day_of_week == 'thursday'
-      #add gym shoes to items
       @items << 'gym shoes'
     end
+  end
 
-    # Bring a packed lunch on all weekdays
+  def ensure_packed_lunch
+    weather = @attributes[:weather]
+    day_of_week = @attributes[:day_of_week]
     if day_of_week != 'saturday' && day_of_week != 'sunday'
       @items << 'packed lunch'
-    elsif false
-      # Used to bring snacks on weekend trips, but now I just buy 'em
+    end
+  end
+
+  def ensure_snacks_weekend
+    weather = @attributes[:weather]
+    day_of_week = @attributes[:day_of_week]
+    if day_of_week == 'saturday' || day_of_week == 'sunday'
       @items << 'snacks'
     end
   end
 
-  # Prints a summary packing list for Melinda's backpack
-  def my_func
+  def prepare
+    appropriate_clothes
+    ensure_gym_shoes
+    ensure_packed_lunch
+    ensure_snacks_weekend
+  end
+
+  def packing_list
     output = []
     output << "Melinda, here's your packing list!"
     output << "Day: #{@attributes[:day_of_week]}, Weather: #{@attributes[:weather]}"
